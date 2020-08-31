@@ -1,0 +1,3 @@
+export const GET_JOKES = "GET_JOKES"
+export const GET_JOKES_ERROR = "GET_JOKES_ERROR"
+export const GET_JOKES_SUCCESS = "GET_JOKES_SUCCESS"

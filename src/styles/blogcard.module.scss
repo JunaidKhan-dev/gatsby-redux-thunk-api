@@ -1,0 +1,15 @@
+.blogcard {
+  width: 33%;
+  .imageholder {
+    width: 100%;
+    height: auto !important;
+    box-sizing: border-box;
+    box-shadow: inset 1px 0px 0px 0px var(--tertiaryColor);
+    overflow: hidden;
+    img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
+  }
+}

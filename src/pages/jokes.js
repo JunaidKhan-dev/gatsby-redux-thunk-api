@@ -1,10 +1,7 @@
 import React from "react"
-import { Link } from "gatsby"
-import { connect } from "react-redux"
 import Layout from "../components/layout"
-import SimpleSlider from "../components/Slider"
-import styles from "../styles/homePage.module.scss"
-import LatestBlog from "../components/LatestBlog"
+import { connect } from "react-redux"
+import { getJokesAction } from "../Store/jokes/jokesActions"
 import {
   ThemeDarkAction,
   ThemeLightAction,
@@ -16,8 +13,13 @@ import {
   ThemeSpecial,
 } from "../Store/darkTheme/themeConstant"
 
-const IndexPage = ({ themeType, dispatch }) => {
+const JokesPage = ({ jokes, dispatch, themeType }) => {
   const [themeStyle, setThemeStyle] = React.useState({})
+
+  React.useEffect(() => {
+    dispatch(getJokesAction())
+  }, [])
+
   React.useEffect(() => {
     if (themeType === ThemeDark) {
       setThemeStyle({ background: "black", color: "white" })
@@ -31,14 +33,21 @@ const IndexPage = ({ themeType, dispatch }) => {
       setThemeStyle({ background: "purple", color: "white" })
     }
   }, [themeType])
+  if (jokes) {
+    var { fetching, error, items } = jokes
+  }
 
   return (
     <Layout>
-      <SimpleSlider />
-      <div className={styles.home}>
-        <h1>Latest Blogs</h1>
-      </div>
-      <LatestBlog />
+      <h1>Jokes Page</h1>
+      {fetching && "loading ..."}
+      {error && "Jokes Not Available"}
+      {items.map((it, i) => (
+        <div>
+          <h1 key={it.i}>{it.name}</h1>
+        </div>
+      ))}
+
       <div className="theme-changer" style={themeStyle && themeStyle}>
         <h1>ThemeChanger</h1>
         <button
@@ -67,8 +76,8 @@ const IndexPage = ({ themeType, dispatch }) => {
 
 const mapStateToProps = state => {
   return {
+    jokes: state.jokesReducer,
     themeType: state.themeReducer.themeType,
   }
 }
-
-export default connect(mapStateToProps)(IndexPage)
+export default connect(mapStateToProps)(JokesPage)
